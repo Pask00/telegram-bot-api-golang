@@ -2,7 +2,7 @@
 **This is a simple telegram-bot-api written in golang.**
 
 ## Installation ##
-go get -u github.com/Pask00/telegram-bot-api-golang
+`go get -u github.com/Pask00/telegram-bot-api-golang`
 
 ## Usage ##
 Example:
