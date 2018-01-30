@@ -35,22 +35,21 @@ type ReplyKeyboardMarkup struct {
 
 type Message struct {
 	MessageID            int              `json:"message_id"`
-	From                 *User            `json:"from"` // optional
+	From                 *User            `json:"from"`
 	Date                 int              `json:"date"`
 	Chat                 *Chat            `json:"chat"`
-	ForwardFrom          *User            `json:"forward_from"`            // optional
-	ForwardFromChat      *Chat            `json:"forward_from_chat"`       // optional
-	ForwardFromMessageID int              `json:"forward_from_message_id"` // optional
-	ForwardDate          int              `json:"forward_date"`            // optional
-	ReplyToMessage       *Message         `json:"reply_to_message"`        // optional
-	EditDate             int              `json:"edit_date"`               // optional
-	Text                 string           `json:"text"`                    // optional
-	Entities             *[]MessageEntity `json:"entities"`                // optional
-	Audio                *Audio           `json:"audio"`                   // optional
-	Photo                []PhotoSize      `json:"photo"`                   // optional
-	Video                *Video           `json:"video"`                   // optional
-	Document             *Document        `json:"document"`                // optional
-
+	ForwardFrom          *User            `json:"forward_from"`
+	ForwardFromChat      *Chat            `json:"forward_from_chat"`
+	ForwardFromMessageID int              `json:"forward_from_message_id"`
+	ForwardDate          int              `json:"forward_date"`
+	ReplyToMessage       *Message         `json:"reply_to_message"`
+	EditDate             int              `json:"edit_date"`
+	Text                 string           `json:"text"`
+	Entities             *[]MessageEntity `json:"entities"`
+	Audio                *Audio           `json:"audio"`
+	Photo                []PhotoSize      `json:"photo"`
+	Video                *Video           `json:"video"`
+	Document             *Document        `json:"document"`
 }
 
 type User struct {
@@ -75,55 +74,55 @@ type ChatPhoto struct {
 type Chat struct {
 	ID                  int        `json:"id"`
 	Type                string     `json:"type"`
-	Title               string     `json:"title"`                          // optional
-	Username            string     `json:"username"`                       // optional
-	FirstName           string     `json:"first_name"`                     // optional
-	LastName            string     `json:"last_name"`                      // optional
-	AllMembersAreAdmins bool       `json:"all_members_are_administrators"` // optional
+	Title               string     `json:"title"`
+	Username            string     `json:"username"`
+	FirstName           string     `json:"first_name"`
+	LastName            string     `json:"last_name"`
+	AllMembersAreAdmins bool       `json:"all_members_are_administrators"`
 	Photo               *ChatPhoto `json:"photo"`
-	Description         string     `json:"description,omitempty"` // optional
-	InviteLink          string     `json:"invite_link,omitempty"` // optional
+	Description         string     `json:"description,omitempty"`
+	InviteLink          string     `json:"invite_link,omitempty"`
 }
 
 type MessageEntity struct {
 	Type   string `json:"type"`
 	Offset int    `json:"offset"`
 	Length int    `json:"length"`
-	URL    string `json:"url"`  // optional
-	User   *User  `json:"user"` // optional
+	URL    string `json:"url"`
+	User   *User  `json:"user"`
 }
 
 type PhotoSize struct {
 	FileID   string `json:"file_id"`
 	Width    int    `json:"width"`
 	Height   int    `json:"height"`
-	FileSize int    `json:"file_size"` // optional
+	FileSize int    `json:"file_size"`
 }
 
 type Audio struct {
 	FileID    string `json:"file_id"`
 	Duration  int    `json:"duration"`
-	Performer string `json:"performer"` // optional
-	Title     string `json:"title"`     // optional
-	MimeType  string `json:"mime_type"` // optional
-	FileSize  int    `json:"file_size"` // optional
+	Performer string `json:"performer"`
+	Title     string `json:"title"`
+	MimeType  string `json:"mime_type"`
+	FileSize  int    `json:"file_size"`
 }
 
 type Document struct {
 	FileID    string     `json:"file_id"`
-	Thumbnail *PhotoSize `json:"thumb"`     // optional
-	FileName  string     `json:"file_name"` // optional
-	MimeType  string     `json:"mime_type"` // optional
-	FileSize  int        `json:"file_size"` // optional
+	Thumbnail *PhotoSize `json:"thumb"`
+	FileName  string     `json:"file_name"`
+	MimeType  string     `json:"mime_type"`
+	FileSize  int        `json:"file_size"`
 }
 
 type Sticker struct {
 	FileID    string     `json:"file_id"`
 	Width     int        `json:"width"`
 	Height    int        `json:"height"`
-	Thumbnail *PhotoSize `json:"thumb"`     // optional
-	Emoji     string     `json:"emoji"`     // optional
-	FileSize  int        `json:"file_size"` // optional
+	Thumbnail *PhotoSize `json:"thumb"`
+	Emoji     string     `json:"emoji"`
+	FileSize  int        `json:"file_size"`
 }
 
 type Video struct {
@@ -131,31 +130,31 @@ type Video struct {
 	Width     int        `json:"width"`
 	Height    int        `json:"height"`
 	Duration  int        `json:"duration"`
-	Thumbnail *PhotoSize `json:"thumb"`     // optional
-	MimeType  string     `json:"mime_type"` // optional
-	FileSize  int        `json:"file_size"` // optional
+	Thumbnail *PhotoSize `json:"thumb"`
+	MimeType  string     `json:"mime_type"`
+	FileSize  int        `json:"file_size"`
 }
 
 type VideoNote struct {
 	FileID    string     `json:"file_id"`
 	Length    int        `json:"length"`
 	Duration  int        `json:"duration"`
-	Thumbnail *PhotoSize `json:"thumb"`     // optional
-	FileSize  int        `json:"file_size"` // optional
+	Thumbnail *PhotoSize `json:"thumb"`
+	FileSize  int        `json:"file_size"`
 }
 
 type Voice struct {
 	FileID   string `json:"file_id"`
 	Duration int    `json:"duration"`
-	MimeType string `json:"mime_type"` // optional
-	FileSize int    `json:"file_size"` // optional
+	MimeType string `json:"mime_type"`
+	FileSize int    `json:"file_size"`
 }
 
 type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"` // optional
-	UserID      int    `json:"user_id"`   // optional
+	LastName    string `json:"last_name"`
+	UserID      int    `json:"user_id"`
 }
 
 type Location struct {
@@ -167,7 +166,7 @@ type Venue struct {
 	Location     Location `json:"location"`
 	Title        string   `json:"title"`
 	Address      string   `json:"address"`
-	FoursquareID string   `json:"foursquare_id"` // optional
+	FoursquareID string   `json:"foursquare_id"`
 }
 
 type UserProfilePhotos struct {
@@ -177,6 +176,6 @@ type UserProfilePhotos struct {
 
 type File struct {
 	FileID   string `json:"file_id"`
-	FileSize int    `json:"file_size"` // optional
-	FilePath string `json:"file_path"` // optional
+	FileSize int    `json:"file_size"`
+	FilePath string `json:"file_path"`
 }

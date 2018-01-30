@@ -175,6 +175,7 @@ func (bot *Bot) SendHTML(chatID interface{}, text string) {
 	makeRequest(url)
 }
 
+// Send a photo message
 func (bot *Bot) SendPhoto(chatID interface{}, photo string) {
 
 	switch param := chatID.(type) {
@@ -234,6 +235,7 @@ func (bot *Bot) SendPhotoCustom(chatID interface{}, photo string, args ...interf
 	makeRequest(url)
 }
 
+// Send an audio message
 func (bot *Bot) SendAudio(chatID interface{}, audio string) {
 
 	switch param := chatID.(type) {
@@ -311,6 +313,7 @@ func (bot *Bot) SendAudioCustom(chatID interface{}, audio string, args ...interf
 	makeRequest(url)
 }
 
+//Send a document message
 func (bot *Bot) SendDocument(chatID interface{}, document string) {
 
 	switch param := chatID.(type) {
@@ -370,6 +373,7 @@ func (bot *Bot) SendDocumentCustom(chatID interface{}, document string, args ...
 	makeRequest(url)
 }
 
+// Send a video message
 func (bot *Bot) SendVideo(chatID interface{}, video string) {
 
 	switch param := chatID.(type) {
@@ -448,6 +452,7 @@ func (bot *Bot) SendVideoCustom(chatID interface{}, video string, args ...interf
 	makeRequest(url)
 }
 
+// Send a voice message
 func (bot *Bot) SendVoice(chatID interface{}, voice string) {
 
 	switch param := chatID.(type) {
@@ -513,6 +518,7 @@ func (bot *Bot) SendVoiceCustom(chatID interface{}, voice string, args ...interf
 	makeRequest(url)
 }
 
+// Edit a message
 func (bot *Bot) EditMessage(chatID interface{}, messageID int, text string) {
 	switch param := chatID.(type) {
 	case int:
@@ -528,6 +534,7 @@ func (bot *Bot) EditMessage(chatID interface{}, messageID int, text string) {
 	makeRequest(url)
 }
 
+// Delete a message
 func (bot *Bot) DeleteMessage(chatID interface{}, messageID int) {
 	switch param := chatID.(type) {
 	case int:
