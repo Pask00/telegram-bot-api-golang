@@ -10,7 +10,7 @@ func main() {
 	mybot := bot.NewBot(token)
 
 	mybot.OnText(func(message *bot.Message) {
-		mybot.SendMessage(23, "ciao")
+		mybot.SendMessage(message.From.ID, "Hello")
 	})
 
 	mybot.Listen()
