@@ -4,7 +4,7 @@ import (
 	"./bot"
 )
 
-var token = "527204875:AAEQWGuX6H0NJfDzxGwTNcrbtA3QzmV8zjw"
+var token = "token"
 
 func main() {
 	mybot := bot.NewBot(token)
