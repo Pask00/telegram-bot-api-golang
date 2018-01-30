@@ -26,5 +26,7 @@ func main(){
 }
 
 ```
+Learn more through the [wiki](https://github.com/Pask00/telegram-bot-api-golang/wiki)!  
+
 ## License ##
 **MIT**
