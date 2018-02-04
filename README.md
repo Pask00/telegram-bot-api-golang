@@ -1,8 +1,8 @@
-# telegram-bot-api-golang
+# teleroutine
 **This is a simple telegram-bot-api written in golang.**
 
 ## Installation ##
-`go get -u github.com/Pask00/telegram-bot-api-golang`
+`go get -u github.com/Pask00/teleroutine`
 
 ## Usage ##
 Example:
@@ -10,7 +10,7 @@ Example:
 package main
 
 import(
-  bot "github.com/Pask00/telegram-bot-api-golang"
+  bot "github.com/Pask00/teleroutine"
 )
 
 token := "mytoken"
@@ -26,7 +26,7 @@ func main(){
 }
 
 ```
-Learn more through the [wiki](https://github.com/Pask00/telegram-bot-api-golang/wiki)!  
+Learn more through the [wiki](https://github.com/Pask00/teleroutine/wiki)!  
 
 ## License ##
 **MIT**
