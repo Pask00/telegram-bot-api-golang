@@ -29,4 +29,4 @@ func main(){
 Learn more through the [wiki](https://github.com/Pask00/teleroutine/wiki)!  
 
 ## License ##
-**MIT**
+**Distribuited under the MIT License**
