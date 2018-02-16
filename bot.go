@@ -4,17 +4,23 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
+	"net/url"
 	"strconv"
 )
 
+func sendToAll(array []chan *Message, message *Message) {
+	for _, el := range array {
+		el <- message
+	}
+}
+
 type Bot struct {
 	token       string
-	video       chan *Message
-	photo       chan *Message
-	text        chan *Message
-	textOn      chan *Message
-	message     chan *Message
+	video       []chan *Message
+	photo       []chan *Message
+	text        []chan *Message
+	textOn      []chan *Message
+	message     []chan *Message
 	videoChan   bool
 	photoChan   bool
 	textChan    bool
@@ -22,17 +28,15 @@ type Bot struct {
 	messageChan bool
 }
 
-type function func(*Message)
-
 // Create a new bot
 func NewBot(token string) *Bot {
 	return &Bot{
 		token,
-		make(chan *Message),
-		make(chan *Message),
-		make(chan *Message),
-		make(chan *Message),
-		make(chan *Message),
+		make([]chan *Message, 0),
+		make([]chan *Message, 0),
+		make([]chan *Message, 0),
+		make([]chan *Message, 0),
+		make([]chan *Message, 0),
 		false,
 		false,
 		false,
@@ -45,6 +49,8 @@ func NewBot(token string) *Bot {
 // First arg -> limit
 // Second arg -> timeout
 func (bot *Bot) Listen(args ...interface{}) {
+	values := url.Values{}
+
 	var offset = 0
 	var limit = 100
 	var timeout = 0
@@ -68,50 +74,41 @@ func (bot *Bot) Listen(args ...interface{}) {
 	} else {
 		panic("Too many arguments")
 	}
+	values.Set("offset", strconv.Itoa(offset))
+	values.Set("timeout", strconv.Itoa(timeout))
+	values.Set("limit", strconv.Itoa(limit))
+
 	fmt.Println("Bot is now running!")
 	for {
-		url := "https://api.telegram.org/bot" + bot.token + "/getUpdates?offset=" + strconv.Itoa(offset) + "&limit=" + strconv.Itoa(limit) + "&timeout" + strconv.Itoa(timeout)
 
-		req, err := http.NewRequest("GET", url, nil)
+		var update *GetUpdates
+
+		val, err := json.Marshal(bot.makeRequestWithReturn("getUpdates", values))
+
 		if err != nil {
-			log.Fatal("Request: ", err)
-			return
+			log.Fatal(err)
 		}
 
-		client := &http.Client{}
-
-		resp, err := client.Do(req)
-		if err != nil {
-			log.Fatal("Response: ", err)
-			return
-		}
-
-		var update GetUpdates
-
-		if err := json.NewDecoder(resp.Body).Decode(&update); err != nil {
-			log.Println(err)
-		}
-
-		resp.Body.Close()
+		json.Unmarshal(val, &update)
 
 		if len(update.Result) > 0 {
-			offset = update.Result[len(update.Result)-1].UpdateID + 1
+			values.Set("offset", strconv.Itoa(update.Result[len(update.Result)-1].UpdateID+1))
 
 			for i := 0; i < len(update.Result); i++ {
 				if update.Ok {
 					switch {
 					case update.Result[i].Message.Text != "" && bot.textChan:
-						bot.text <- update.Result[i].Message
+						sendToAll(bot.text, update.Result[i].Message)
 					case update.Result[i].Message.Video != nil && bot.videoChan:
-						bot.video <- update.Result[i].Message
+						sendToAll(bot.video, update.Result[i].Message)
 					case update.Result[i].Message.Photo != nil && bot.photoChan:
-						bot.photo <- update.Result[i].Message
+						sendToAll(bot.photo, update.Result[i].Message)
 					}
 					if update.Result[i].Message.Text != "" && bot.textOnChan {
-						bot.textOn <- update.Result[i].Message
+						sendToAll(bot.textOn, update.Result[i].Message)
 					}
 					if bot.messageChan {
-						bot.message <- update.Result[i].Message
+						sendToAll(bot.message, update.Result[i].Message)
 					}
 				} else {
 					fmt.Println("Error: " + strconv.Itoa(update.ErrorCode) + "\tDescription: " + update.Description)

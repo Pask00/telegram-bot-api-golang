@@ -1,5 +1,7 @@
 package bot
 
+import "encoding/json"
+
 type GetUpdates struct {
 	Ok          bool   `json:"ok"`
 	ErrorCode   int    `json:"error_code"`
@@ -10,17 +12,30 @@ type GetUpdates struct {
 	} `json:"result"`
 }
 
-type SendMessage struct {
-	Ok          bool   `json:"ok"`
-	ErrorCode   int    `json:"error_code"`
-	Description string `json:"description"`
-	Result      struct {
-		MessageID int    `json:"message_id"`
-		From      *User  `json:"from"`
-		Chat      *Chat  `json:"chat"`
-		Date      int    `json:"date"`
-		Text      string `json:"text"`
-	} `json:"result"`
+type Response struct {
+	Ok          bool            `json:"ok"`
+	Result      json.RawMessage `json:"result"`
+	ErrorCode   int             `json:"error_code"`
+	Description string          `json:"description"`
+}
+
+type ChatMember struct {
+	User                  *User  `json:"user"`
+	Status                string `json:"status"`
+	UntilDate             int64  `json:"until_date,omitempty"`
+	CanBeEdited           bool   `json:"can_be_edited,omitempty"`
+	CanChangeInfo         bool   `json:"can_change_info,omitempty"`
+	CanPostMessages       bool   `json:"can_post_messages,omitempty"`
+	CanEditMessages       bool   `json:"can_edit_messages,omitempty"`
+	CanDeleteMessages     bool   `json:"can_delete_messages,omitempty"`
+	CanInviteUsers        bool   `json:"can_invite_users,omitempty"`
+	CanRestrictMembers    bool   `json:"can_restrict_members,omitempty"`
+	CanPinMessages        bool   `json:"can_pin_messages,omitempty"`
+	CanPromoteMembers     bool   `json:"can_promote_members,omitempty"`
+	CanSendMessages       bool   `json:"can_send_messages,omitempty"`
+	CanSendMediaMessages  bool   `json:"can_send_media_messages,omitempty"`
+	CanSendOtherMessages  bool   `json:"can_send_other_messages,omitempty"`
+	CanAddWebPagePreviews bool   `json:"can_add_web_page_previews,omitempty"`
 }
 
 type KeyboardButton struct {
@@ -42,6 +57,7 @@ type Message struct {
 	ForwardFromChat      *Chat            `json:"forward_from_chat"`
 	ForwardFromMessageID int              `json:"forward_from_message_id"`
 	ForwardDate          int              `json:"forward_date"`
+	NewChatMember        *User            `json:"new_chat_member"`
 	ReplyToMessage       *Message         `json:"reply_to_message"`
 	EditDate             int              `json:"edit_date"`
 	Text                 string           `json:"text"`
