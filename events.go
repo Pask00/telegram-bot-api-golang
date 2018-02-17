@@ -51,7 +51,7 @@ func (bot *Bot) OnLeft(fun func(*Message)) chan *Message {
 		for {
 			v, ok := <-newChan
 			if !ok {
-				bot.join = remove(bot.left, newChan)
+				bot.left = remove(bot.left, newChan)
 				return
 			} else {
 				fun(v)
