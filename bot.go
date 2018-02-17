@@ -21,11 +21,13 @@ type Bot struct {
 	text        []chan *Message
 	textOn      []chan *Message
 	message     []chan *Message
+	join        []chan *Message
 	videoChan   bool
 	photoChan   bool
 	textChan    bool
 	textOnChan  bool
 	messageChan bool
+	joinChan    bool
 }
 
 // Create a new bot
@@ -37,6 +39,8 @@ func NewBot(token string) *Bot {
 		make([]chan *Message, 0),
 		make([]chan *Message, 0),
 		make([]chan *Message, 0),
+		make([]chan *Message, 0),
+		false,
 		false,
 		false,
 		false,
@@ -97,6 +101,8 @@ func (bot *Bot) Listen(args ...interface{}) {
 			for i := 0; i < len(update.Result); i++ {
 				if update.Ok {
 					switch {
+					case update.Result[i].Message.NewChatMember != nil && bot.joinChan:
+						sendToAll(bot.join, update.Result[i].Message)
 					case update.Result[i].Message.Text != "" && bot.textChan:
 						sendToAll(bot.text, update.Result[i].Message)
 					case update.Result[i].Message.Video != nil && bot.videoChan:

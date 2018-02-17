@@ -24,8 +24,27 @@ func (bot *Bot) On(text string, fun func(*Message)) chan *Message {
 	return newChan
 }
 
+func (bot *Bot) OnJoin(fun func(*Message)) chan *Message {
+	bot.joinChan = true
+	newChan := make(chan *Message)
+	bot.join = append(bot.message, newChan)
+	go func() {
+		for {
+			v, ok := <-newChan
+			if !ok {
+				bot.join = remove(bot.join, newChan)
+				return
+			} else {
+				fun(v)
+			}
+
+		}
+	}()
+	return newChan
+}
+
 // Listener for a generic message
-func (bot *Bot) OnMessage(fun func(message *Message)) chan *Message {
+func (bot *Bot) OnMessage(fun func(*Message)) chan *Message {
 	bot.messageChan = true
 	newChan := make(chan *Message)
 	bot.message = append(bot.message, newChan)
