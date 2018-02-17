@@ -58,6 +58,7 @@ type Message struct {
 	ForwardFromMessageID int              `json:"forward_from_message_id"`
 	ForwardDate          int              `json:"forward_date"`
 	NewChatMember        *User            `json:"new_chat_member"`
+	LeftChatMember       *User            `json:"left_chat_member"`
 	ReplyToMessage       *Message         `json:"reply_to_message"`
 	EditDate             int              `json:"edit_date"`
 	Text                 string           `json:"text"`

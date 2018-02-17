@@ -27,12 +27,31 @@ func (bot *Bot) On(text string, fun func(*Message)) chan *Message {
 func (bot *Bot) OnJoin(fun func(*Message)) chan *Message {
 	bot.joinChan = true
 	newChan := make(chan *Message)
-	bot.join = append(bot.message, newChan)
+	bot.join = append(bot.join, newChan)
 	go func() {
 		for {
 			v, ok := <-newChan
 			if !ok {
 				bot.join = remove(bot.join, newChan)
+				return
+			} else {
+				fun(v)
+			}
+
+		}
+	}()
+	return newChan
+}
+
+func (bot *Bot) OnLeft(fun func(*Message)) chan *Message {
+	bot.leftChan = true
+	newChan := make(chan *Message)
+	bot.left = append(bot.left, newChan)
+	go func() {
+		for {
+			v, ok := <-newChan
+			if !ok {
+				bot.join = remove(bot.left, newChan)
 				return
 			} else {
 				fun(v)
