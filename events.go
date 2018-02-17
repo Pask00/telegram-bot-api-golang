@@ -25,7 +25,7 @@ func (bot *Bot) On(text string, fun func(*Message)) chan *Message {
 }
 
 // Listener for a generic message
-func (bot *Bot) OnMessage(fun func(*Message)) chan *Message {
+func (bot *Bot) OnMessage(fun func(message *Message)) chan *Message {
 	bot.messageChan = true
 	newChan := make(chan *Message)
 	bot.message = append(bot.message, newChan)
