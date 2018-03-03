@@ -3,9 +3,13 @@ package bot
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 func sendToAll(array []chan *Message, message *Message) {
@@ -51,6 +55,54 @@ func NewBot(token string) *Bot {
 		false,
 		false,
 	}
+}
+
+func (bot *Bot) Stop() {
+	bot.makeRequest("deleteWebhook", nil)
+}
+
+func (bot *Bot) Start(urlListener string) {
+	values := url.Values{}
+
+	values.Set("url", urlListener)
+
+	fmt.Println("Bot is now running!")
+	bot.makeRequest("setWebhook", values)
+
+	r := mux.NewRouter()
+	r.HandleFunc(urlListener, func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case "POST":
+
+			var result *Result
+			body, err := ioutil.ReadAll(r.Body)
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			json.Unmarshal(body, &result)
+
+			switch {
+			case result.Message.NewChatMember != nil && bot.joinChan:
+				sendToAll(bot.join, result.Message)
+			case result.Message.LeftChatMember != nil && bot.leftChan:
+				sendToAll(bot.left, result.Message)
+			case result.Message.Text != "" && bot.textChan:
+				sendToAll(bot.text, result.Message)
+			case result.Message.Video != nil && bot.videoChan:
+				sendToAll(bot.video, result.Message)
+			case result.Message.Photo != nil && bot.photoChan:
+				sendToAll(bot.photo, result.Message)
+			}
+			if result.Message.Text != "" && bot.textOnChan {
+				sendToAll(bot.textOn, result.Message)
+			}
+			if bot.messageChan {
+				sendToAll(bot.message, result.Message)
+			}
+		}
+	})
+	http.ListenAndServe(":3000", r)
 }
 
 // Start listening telegram API
@@ -124,6 +176,8 @@ func (bot *Bot) Listen(args ...interface{}) {
 					}
 				} else {
 					fmt.Println("Error: " + strconv.Itoa(update.ErrorCode) + "\tDescription: " + update.Description)
+					fmt.Println("Bot stopped!")
+					return
 				}
 			}
 		}

@@ -12,6 +12,11 @@ type GetUpdates struct {
 	} `json:"result"`
 }
 
+type Result struct {
+	UpdateID int      `json:"update_id"`
+	Message  *Message `json:"message"`
+}
+
 type Response struct {
 	Ok          bool            `json:"ok"`
 	Result      json.RawMessage `json:"result"`
