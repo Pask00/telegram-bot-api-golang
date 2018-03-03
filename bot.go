@@ -65,12 +65,13 @@ func (bot *Bot) Start(urlListener string) {
 	values := url.Values{}
 
 	values.Set("url", urlListener)
-
+	u, _ := url.Parse(urlListener)
 	fmt.Println("Bot is now running!")
 	bot.makeRequest("setWebhook", values)
 
 	r := mux.NewRouter()
-	r.HandleFunc(urlListener, func(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(u.EscapedPath())
+	r.HandleFunc(u.EscapedPath(), func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "POST":
 
